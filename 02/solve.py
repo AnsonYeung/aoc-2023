@@ -33,24 +33,20 @@ with open("input.txt", "r") as f:
 
 def part1():
     ans = 0
-    bag_content = (12, 13, 14)
+    bag_content = {"red": 12, "green": 13, "blue": 14}
     for row in data:
-        id = re.findall(r"\d+", row.split(":")[0])[0]
-        rest = row.split(":")[1]
+        row_match = re.fullmatch(r"Game (\d+): (.*)", row)
+        assert row_match is not None
+        id = int(row_match.group(1))
+        rest = row_match.group(2)
         ok = True
-        for content in rest.split(";"):
-            red = re.findall(r"\d+ red", content)
-            if len(red) > 0 and int(red[0][:-4]) > bag_content[0]:
-                ok = False
-                break
-            green = re.findall(r"\d+ green", content)
-            if len(green) > 0 and int(green[0][:-6]) > bag_content[1]:
-                ok = False
-                break
-            blue = re.findall(r"\d+ blue", content)
-            if len(blue) > 0 and int(blue[0][:-5]) > bag_content[2]:
-                ok = False
-                break
+        for round in rest.split(";"):
+            round_content = defaultdict(lambda: 0)
+            for x in re.finditer(r"(\d+) (\w+)", round):
+                round_content[x.group(2)] = int(x.group(1))
+            for color in bag_content:
+                if round_content[color] > bag_content[color]:
+                    ok = False
         if ok:
             ans += int(id)
     submit(1, ans)
@@ -58,23 +54,17 @@ def part1():
 def part2():
     ans = 0
     for row in data:
-        id = re.findall(r"\d+", row.split(":")[0])[0]
-        rest = row.split(":")[1]
-        ok = True
-        r_max = 0
-        g_max = 0
-        b_max = 0
-        for content in rest.split(";"):
-            red = re.findall(r"\d+ red", content)
-            r_num = 0 if len(red) == 0 else int(red[0][:-4])
-            green = re.findall(r"\d+ green", content)
-            g_num = 0 if len(green) == 0 else int(green[0][:-6])
-            blue = re.findall(r"\d+ blue", content)
-            b_num = 0 if len(blue) == 0 else int(blue[0][:-5])
-            r_max = max(r_max, r_num)
-            g_max = max(g_max, g_num)
-            b_max = max(b_max, b_num)
-        ans += r_max * g_max * b_max
+        row_match = re.fullmatch(r"Game \d+: (.*)", row)
+        assert row_match is not None
+        rest = row_match.group(1)
+        bag_content = {"red": 0, "green": 0, "blue": 0}
+        for round in rest.split(";"):
+            for x in re.finditer(r"(\d+) (\w+)", round):
+                bag_content[x.group(2)] = max(bag_content[x.group(2)], int(x.group(1)))
+        round_result = 1
+        for c in bag_content:
+            round_result *= bag_content[c]
+        ans += round_result
     submit(2, ans)
 
 if __name__ == "__main__":
