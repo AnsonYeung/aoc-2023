@@ -10,9 +10,6 @@ from tqdm import tqdm
 import re
 import numpy as np
 import os
-import sys
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 with open("input.txt", "r") as f:
     data = f.read().split('\n')[:-1]
@@ -35,6 +32,7 @@ def part1():
                     ok = False
         if ok:
             ans += int(id)
+    print(f"Part 1: {ans}")
 
 def part2():
     ans = 0
@@ -50,6 +48,7 @@ def part2():
         for c in bag_content:
             round_result *= bag_content[c]
         ans += round_result
+    print(f"Part 2: {ans}")
 
 if __name__ == "__main__":
     part1()
