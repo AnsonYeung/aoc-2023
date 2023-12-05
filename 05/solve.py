@@ -66,24 +66,26 @@ def part2():
     cur_state = []
     for i in range(0, len(seeds), 2):
         cur_state.append((seeds[i], seeds[i] + seeds[i + 1]))
+    cur_state = simplify(cur_state)
     for step in step_map:
+        assert cur_state[0] != (0, 0)
         new_state = []
         for cur_start, cur_end in cur_state:
             cur = cur_start
             for start, end, dest in step:
+                if cur == cur_end: break
                 if cur < start:
-                    new_state.append((cur, start))
-                    cur = start
+                    new_state.append((cur, min(start, cur_end)))
+                    cur = min(start, cur_end)
+                if cur == cur_end: break
                 if cur >= end: continue
-                if cur_end <= end:
-                    new_state.append((cur - start + dest, cur_end - start + dest))
-                    break
-                new_state.append((cur - start + dest, end - start + dest))
-                cur = end
+                new_state.append((cur - start + dest, min(end, cur_end) - start + dest))
+                cur = min(end, cur_end)
+            if cur != cur_end:
+                new_state.append((cur, cur_end))
         cur_state = simplify(new_state)
     ans = cur_state[0][0]
     print(f"Part 2: {ans}")
-    copy_to_clipboard(str(ans))
 
 if __name__ == "__main__":
     part1()
