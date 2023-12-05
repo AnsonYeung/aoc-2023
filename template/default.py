@@ -17,6 +17,12 @@ def copy_to_clipboard(s: str):
     # Copy to clipboard using OSC52
     print(f"\x1b]52;c;{b64encode(s.encode()).decode()}\x07", end="")
 
+def ints(l: list[str]) -> list[int]:
+    return [int(s) for s in l]
+
+def str_to_ints(s: str) -> list[int]:
+    return ints(re.findall(r"\d+", s))
+
 with open("input.txt", "r") as f:
     data = f.read().split('\n')[:-1]
 
