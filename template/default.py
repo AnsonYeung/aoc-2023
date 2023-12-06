@@ -23,8 +23,11 @@ def ints(l: list[str]) -> list[int]:
 def str_to_ints(s: str) -> list[int]:
     return ints(re.findall(r"\d+", s))
 
-with open("input.txt", "r") as f:
-    data = f.read().split('\n')[:-1]
+if stdin.isatty():
+    with open("input.txt", "r") as f:
+        data = f.read().split('\n')[:-1]
+else:
+    data = stdin.read().split('\n')[:-1]
 
 def part1():
     ans = 0
