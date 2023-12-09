@@ -21,7 +21,7 @@ def ints(l: list[str]) -> list[int]:
     return [int(s) for s in l]
 
 def str_to_ints(s: str) -> list[int]:
-    return ints(re.findall(r"\d+", s))
+    return ints(re.findall(r"-?\d+", s))
 
 if stdin.isatty():
     with open("input.txt", "r") as f:
