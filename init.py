@@ -21,6 +21,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--template-file", default="template/default.py")
     parser.add_argument("-y", "--year", default=2023, type=int)
     parser.add_argument("-i", "--immediate", action="store_true", default=False)
+    parser.add_argument("-l", "--lines", default=5)
     parser.add_argument("--input-only", action="store_true", default=False)
 
     args = parser.parse_args()
@@ -47,3 +48,17 @@ if __name__ == "__main__":
 
     with open(f"{day_str}/input.txt", "w") as inpFile:
         inpFile.write(r.text)
+
+    print()
+    input = r.text.split("\n")[:-1]
+    if len(input) <= args.lines * 2:
+        print("Input:")
+        print(r.text)
+    else:
+        print(f"First {args.lines} lines:")
+        for i in range(args.lines):
+            print(input[i])
+        print()
+        print(f"Last {args.lines} lines:")
+        for i in range(args.lines):
+            print(input[i - args.lines])
