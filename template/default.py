@@ -1,4 +1,4 @@
-#!/usr/bin/env pypy3
+#!/usr/bin/env python3
 from sys import stdin, exit
 from copy import *
 from heapq import *
