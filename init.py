@@ -33,6 +33,8 @@ if __name__ == "__main__":
 
     session = get_session()
 
+    print(f"Day {args.day}")
+
     if not args.immediate:
         cur = datetime.now()
         startTime = cur.replace(microsecond=0, second=0, minute=0) + timedelta(hours = 1)
