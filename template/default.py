@@ -12,6 +12,8 @@ import numpy as np
 import os
 import sys
 from base64 import b64encode
+from typing import Any, TypeVar
+T = TypeVar("T")
 
 def copy_to_clipboard(s: str):
     # Copy to clipboard using OSC52
@@ -22,6 +24,16 @@ def ints(l: list[str]) -> list[int]:
 
 def str_to_ints(s: str) -> list[int]:
     return ints(re.findall(r"-?\d+", s))
+
+def make_matrix(r: int, c: int, default: T) -> list[list[T]]:
+    return [[default for _ in range(c)] for _ in range(r)]
+
+def print_matrix(data: list[list[Any]]):
+    for r in data:
+        for x in r:
+            print(x, end="")
+        print()
+    print()
 
 if stdin.isatty():
     with open("input.txt", "r") as f:
